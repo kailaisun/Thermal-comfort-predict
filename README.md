@@ -1,6 +1,7 @@
 # Thermal-comfort-predict
 
 
+ <img src="c1.jpg" width="100%">
 
 ## Environment
 - The code is tested on python 3.9, cuda 11.
@@ -35,6 +36,10 @@ You can change different Machine learning algorithms (e.g., XGB boost,Random For
 python predict_Transformer_DNN.py
 ```
 You can change different Deep learning algorithms (e.g., DNN, Transfromer) on lines 140 and 155.
+
+ <img src="c2.png" width="100%">
+ 
+ <img src="c3.jpg" width="100%">
 
 ## Citation
 
