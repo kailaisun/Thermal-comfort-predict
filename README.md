@@ -4,7 +4,7 @@
  <img src="c1.jpg" width="80%">
 
 ## Environment
-- The code is tested on python 3.9, pytorch 2.4, cuda 11.
+- The code is tested on python 3.8, pytorch 2.4, cuda 11.
 
 
 ## Installation
