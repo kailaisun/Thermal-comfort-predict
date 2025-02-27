@@ -47,62 +47,58 @@ data = pd.read_excel(file_path, sheet_name='Sheet1')
 # data['TSV'] = data['TSV-upper body'].map(pmv_mapping)
 # data.drop(columns=['TSV-upper body'], inplace=True)
 # data['Air velocity'].fillna(data['Air velocity'].mean(), inplace=True)
-## Step 1: 计算斯皮尔曼相关系数矩阵
+## Step 1: 
 spearman_corr = data.corr(method='spearman')
 
-# 打印斯皮尔曼相关系数矩阵
+
 print("Spearman Correlation Matrix:")
 print(spearman_corr)
 
-# 可视化斯皮尔曼相关矩阵
+
 plt.figure(figsize=(8, 6))
 sns.heatmap(spearman_corr, annot=True, cmap='coolwarm', fmt='.2f')
 plt.title('Spearman Correlation Matrix')
 plt.show()
 
-# Step 2: 计算皮尔逊相关系数矩阵
+
 pearson_corr = data.corr(method='pearson')
 
-# 打印皮尔逊相关系数矩阵
+
 print("\nPearson Correlation Matrix:")
 print(pearson_corr)
 
-# 可视化皮尔逊相关矩阵
+
 plt.figure(figsize=(8, 6))
 sns.heatmap(pearson_corr, annot=True, cmap='coolwarm', fmt='.2f')
 plt.title('Pearson Correlation Matrix')
 plt.show()
 
-# Step 3: 计算肯德尔相关系数矩阵
+# Step 3:
 kendall_corr = data.corr(method='kendall')
 
-# 打印肯德尔相关系数矩阵
+
 print("\nKendall Correlation Matrix:")
 print(kendall_corr)
 
-# 可视化肯德尔相关矩阵
+
 plt.figure(figsize=(8, 6))
 sns.heatmap(kendall_corr, annot=True, cmap='coolwarm', fmt='.2f')
 plt.title('Kendall Correlation Matrix')
 plt.show()
 
-# Step 4: 单独计算每个特征与目标变量的相关性
-# 创建字典存储每种方法的相关系数
+# Step 4: 
 correlation_methods = ['spearman', 'pearson', 'kendall']
 correlation_results = {method: {} for method in correlation_methods}
 
-for col in data.columns[:-1]:  # 不包含目标列本身
-    # 斯皮尔曼
+for col in data.columns[:-1]:  #
     spearman_corr, spearman_p = spearmanr(data[col], data['TSV'])
     correlation_results['spearman'][col] = (spearman_corr, spearman_p)
-    # 皮尔逊
     pearson_corr, pearson_p = pearsonr(data[col], data['TSV'])
     correlation_results['pearson'][col] = (pearson_corr, pearson_p)
-    # 肯德尔
     kendall_corr, kendall_p = kendalltau(data[col], data['TSV'])
     correlation_results['kendall'][col] = (kendall_corr, kendall_p)
 
-# Step 5: 转换为 DataFrame 并排序
+# Step 5: 
 correlation_dfs = {}
 for method in correlation_methods:
     df = pd.DataFrame(
@@ -111,12 +107,12 @@ for method in correlation_methods:
     ).T.sort_values(by='Correlation', ascending=False)
     correlation_dfs[method] = df
 
-# 打印特征和目标变量的相关性
+
 for method in correlation_methods:
     print(f"\n{method.capitalize()} Correlation with TSV:")
     print(correlation_dfs[method])
 
-# Step 6: 可视化特征和目标变量的相关性
+# Step 6: 
 for method in correlation_methods:
     plt.figure(figsize=(8, 5))
     correlation_dfs[method]['Correlation'].plot(kind='bar', color='skyblue')
