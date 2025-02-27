@@ -3,7 +3,7 @@
 
 
 ## Environment
-- The code is tested on python 3.9, cuda 12.
+- The code is tested on python 3.9, cuda 11.
 
 
 ## Installation
@@ -18,12 +18,23 @@
   ```
 
 
- ## Test
+ ## Correlation analysis
 ```Bash
-python ML3-dl.py
+python correlation-analysis.py
 ```
+You will get some figures, which can represent the correlation between features.
 
+ ## Test Machine Learning (ML) algorithms
+```Bash
+python predict_ML.py
+```
+You can change different Machine learning algorithms (e.g., XGB boost,Random Forest, Logistic Regression) on lines 117 and 130.
 
+ ## Test Deep Learning (DL) algorithms
+```Bash
+python predict_Transformer_DNN.py
+```
+You can change different Deep learning algorithms (e.g., DNN, Transfromer) on lines 140 and 155.
 
 ## Citation
 
