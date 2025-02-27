@@ -1,13 +1,9 @@
-
 import pandas as pd
 from evalc import evaluate_model
-### StratifiedKFold
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
-import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from Transformer_class import TransformerClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
@@ -17,29 +13,17 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.metrics import accuracy_score, classification_report
-
-
+from sklearn.base import clone, BaseEstimator, ClassifierMixin
+from sklearn.utils.validation import check_X_y, check_is_fitted, check_array
+from sklearn.utils.multiclass import check_classification_targets
+import numpy as np
+from imblearn.over_sampling import SMOTE
+from sklearn.neural_network import MLPClassifier
+from Transformer_class import TransformerClassifier
+from dnn_class import DNNClassifier
 
 file_path='data.xlsx'
 data = pd.read_excel(file_path, sheet_name='Sheet1')
-
-# # Define the PMV mapping
-# pmv_mapping = {
-#     'Cold': -3,
-#     'Cool': -2,
-#     'Slightly cool': -1,
-#     'Neutral': 0,
-#     'Slightly warm': 1,
-#     'Warm': 2,
-#     'Hot': 3
-# }
-#
-# # Map the TSV-upper body column to PMV values
-# data['TSV-upper body (PMV)'] = data['TSV-upper body'].map(pmv_mapping)
-
-# # Display the updated dataset to the user
-# import ace_tools as tools; tools.display_dataframe_to_user(name="TSV-upper body mapped to PMV", dataframe=data)
-
 
 
 # Select features and label
@@ -56,18 +40,10 @@ y = data[label_column]
 y=y-min(y)
 
 
-# Drop rows with missing values
-# X = X.dropna()
-# y = y.loc[X.index]  # Align the labels with the filtered rows
 
 # One-hot encode categorical columns (if applicable)
 X = pd.get_dummies(X, drop_first=True)
 
-
-from sklearn.base import clone, BaseEstimator, ClassifierMixin
-from sklearn.utils.validation import check_X_y, check_is_fitted, check_array
-from sklearn.utils.multiclass import check_classification_targets
-import numpy as np
 
 class OrdinalClassifier(BaseEstimator, ClassifierMixin):
 
@@ -111,30 +87,20 @@ class OrdinalClassifier(BaseEstimator, ClassifierMixin):
         # probs=probs*[0.5,0.63, 1, 1.63, 1, 0.63, 0.5]
         # probs = probs * [1.63, 1, 0.63, 0.5, 0.63, 1, 1.63]
 
-
         return probs
-
 
 X=X.to_numpy()
 y=y.to_numpy()
 scaler = MinMaxScaler()
 
-# 使用 MinMaxScaler 进行标准化
 X = scaler.fit_transform(X)
-
 
 # Re-split the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
 
-from imblearn.over_sampling import SMOTE
-
 smote = SMOTE(random_state=42)
 X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
-# from sklearn.neural_network import MLPClassifier
-from Transformer_class import TransformerClassifier
-# from dnn_class import DNNClassifier
-from sklearn.preprocessing import MinMaxScaler
 
 
 clf = TransformerClassifier().cuda()
@@ -150,7 +116,7 @@ accuracy = accuracy_score(y_test, y_pred_class)
 class_report = classification_report(y_test, y_pred_class)
 print('baseline')
 print(accuracy), print(class_report)
-# exit(0)
+exit(0)
 
 model = OrdinalClassifier(TransformerClassifier().cuda())
 model.fit(X_train_resampled, y_train_resampled)
@@ -163,10 +129,3 @@ class_report = classification_report(y_test, y_pred_class)
 print('order')
 print(accuracy), print(class_report)
 
-
-# from sklearn.linear_model import LogisticRegression
-#
-# OvR_LR = LogisticRegression(multi_class='ovr').fit(X, Y_ord)
-# OvR_LR.score(X, Y_ord)
-# print(OvR_LR.score(X, Y_ord))
-# X_train, X_test, y_train, y_test = train_test_split(X, Y_ord, test_size=0.33, random_state=42)
