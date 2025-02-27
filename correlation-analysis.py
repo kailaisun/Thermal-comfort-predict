@@ -27,9 +27,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.stats import spearmanr, kendalltau, pearsonr
 
-# Load the uploaded file to inspect its contents
 
-file_path='SDE4 data for ordinal classification.xlsx'
+
+file_path='data.xlsx'
 data = pd.read_excel(file_path, sheet_name='Sheet1')
 
 # # Define the PMV mapping
