@@ -19,8 +19,8 @@ from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.metrics import accuracy_score, classification_report
 
 
-# Load the uploaded file to inspect its contents
-file_path='SDE4 data for ordinal classification.xlsx'
+
+file_path='data.xlsx'
 data = pd.read_excel(file_path, sheet_name='Sheet1')
 
 # # Define the PMV mapping
