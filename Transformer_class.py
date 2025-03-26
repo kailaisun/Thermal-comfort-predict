@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader, TensorDataset
 import torch.nn.functional as F
 
 class TransformerClassifier(nn.Module):
-    def __init__(self, input_dim=12, num_classes=7, num_heads=4, num_layers=1, hidden_dim=128, dropout=0.1):
+    def __init__(self, input_dim=12, num_classes=7, num_heads=4, num_layers=3, hidden_dim=128, dropout=0.1):
         super(TransformerClassifier, self).__init__()
         self.num_classes = num_classes
 
