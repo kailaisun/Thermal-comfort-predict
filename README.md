@@ -1,4 +1,4 @@
-# Thermal-comfort-predict
+# Leveraging Ordinal Information and Deep Learning to Enhance Thermal Comfort Predictions 
 
 
  <img src="c1.jpg" width="80%">
