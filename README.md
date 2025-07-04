@@ -29,7 +29,7 @@ You will get some figures, which can represent the correlation between features.
 ```Bash
 python predict_ML.py
 ```
-You can change different Machine learning algorithms (e.g., XGB boost,Random Forest, Logistic Regression) on lines 117 and 130.
+You can change different Machine learning algorithms (e.g., XGB boost,Random Forest, Logistic Regression) on lines 86 and 99.
 
  ## Test Deep Learning (DL) algorithms
 ```Bash
