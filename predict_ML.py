@@ -83,7 +83,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 
 
 
-clf =  KNeighborsClassifier()# XGBClassifier(n_estimators=20,max_depth=10,objective='multi:softmax',num_class=7)  
+clf =  KNeighborsClassifier()# XGBClassifier(n_estimators=100,max_depth=10,objective='multi:softmax',num_class=7)  
 clf.fit(X_train, y_train)
 
 # Predict the labels for the test set
@@ -96,7 +96,7 @@ print('baseline')
 print(accuracy), print(mean_absolute_error(y_test,y_pred_class)),print(class_report)
 
 
-model = OrdinalClassifier( KNeighborsClassifier())  #XGBClassifier(n_estimators=20,max_depth=10,objective='multi:softprob',num_class=7)
+model = OrdinalClassifier( KNeighborsClassifier())  #XGBClassifier(n_estimators=100,max_depth=10,objective='multi:softprob',num_class=7)
 model.fit(X_train, y_train)
 y_pred_class = model.predict(X_test)
 
