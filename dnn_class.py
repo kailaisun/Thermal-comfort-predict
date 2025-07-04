@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader, TensorDataset
 
 
 class DNNClassifier(nn.Module):
-    def __init__(self, input_dim=12, num_classes=7, hidden_dims=[64], dropout=0.1): #128,256, 256,
+    def __init__(self, input_dim=12, num_classes=7, hidden_dims=[128, 64], dropout=0.1): #128,256, 256,
         super(DNNClassifier, self).__init__()
         self.num_classes = num_classes
 
