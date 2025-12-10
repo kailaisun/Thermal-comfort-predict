@@ -17,12 +17,12 @@ class TransformerClassifier(nn.Module):
         self.num_classes = num_classes
         self.hidden_dim = hidden_dim
 
-        # 保持之前的架构
+       
         self.seq_len = 8
         self.token_dim = hidden_dim // self.seq_len
 
         if self.token_dim % num_heads != 0:
-            raise ValueError(f"token_dim ({self.token_dim}) 必须能被 num_heads ({num_heads}) 整除。")
+            raise ValueError(f"token_dim ({self.token_dim})  num_heads ({num_heads})")
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -34,7 +34,7 @@ class TransformerClassifier(nn.Module):
             d_model=self.token_dim,
             nhead=num_heads,
             dim_feedforward=self.token_dim * 4,
-            dropout=0.1,  # 保持低 Dropout
+            dropout=0.1,  
             batch_first=True
         )
         self.transformer = nn.TransformerEncoder(encoder_layer, num_layers=num_layers)
@@ -69,16 +69,14 @@ class TransformerClassifier(nn.Module):
             tensor_y_val = torch.tensor(y_val, dtype=torch.long).to(self.device)
             val_dataset = TensorDataset(tensor_x_val, tensor_y_val)
             val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
-            print(">>> 启用验证集监控 <<<")
+            print(">>> val <<<")
 
-        # --- 核心修改：回归温和权重 ---
-        # 既然 Class 2 (样本最多) 掉分严重，我们就把它的权重从 0.6 提回 0.8
-        # Class 0 从 2.0 降回 1.5，不再过度溺爱
+
         manual_weights = [1.5, 1.0, 0.8, 1.0, 1.2]
         class_weights = torch.tensor(manual_weights, dtype=torch.float32).to(self.device)
-        print(f"应用温和权重: {manual_weights}")
+        print(f"weight: {manual_weights}")
 
-        # 回归 CrossEntropy
+        #  CrossEntropy
         criterion = nn.CrossEntropyLoss(weight=class_weights, label_smoothing=0.1)
 
         dataset = TensorDataset(tensor_x, tensor_y)
@@ -137,32 +135,14 @@ class TransformerClassifier(nn.Module):
         return self
 
     def predict(self, X):
-        """
-        预测类别标签
-
-        参数:
-        X -- 需要预测的样本特征 (numpy数组或pandas DataFrame)
-
-        返回:
-        预测的类别标签 (张量)
-        """
-        self.eval()  # 设置模型为评估模式
+        self.eval()  
         with torch.no_grad():
             tensor_x = torch.tensor(X, dtype=torch.float32).to(self.device)
             logits = self.forward(tensor_x)
             return torch.argmax(logits, dim=1)
 
     def predict_proba(self, X):
-        """
-        预测类别的概率
-
-        参数:
-        X -- 需要预测的样本特征 (numpy数组或pandas DataFrame)
-
-        返回:
-        每个类别的预测概率 (张量)
-        """
-        self.eval()  # 设置模型为评估模式
+        self.eval() 
         with torch.no_grad():
             tensor_x = torch.tensor(X, dtype=torch.float32).to(self.device)
             logits = self.forward(tensor_x)
@@ -171,4 +151,5 @@ class TransformerClassifier(nn.Module):
 
     def clone(self):
         return TransformerClassifier()
+
 
